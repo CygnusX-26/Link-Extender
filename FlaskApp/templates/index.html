@@ -1,0 +1,53 @@
+<html>
+<head>
+<script>
+window.onload = function(){
+	var request = new XMLHttpRequest();
+	request.open('GET', 'https://www.reddit.com/r/copypasta/.json', true);
+
+	request.onload = function() {
+	  if (this.status >= 200 && this.status < 400) {
+		// Success!
+		var data = JSON.parse(this.response);
+		console.log(data)
+		var posts = data.data.children;
+		console.log(posts);
+		var postNr = Math.floor(Math.random() * posts.length);
+		console.log(postNr);
+		var post = posts[postNr].data;
+		console.log(post);
+		
+		var titleHolder = document.getElementById("titleHolder");
+		var postHolder = document.getElementById("postHolder");
+		var urlHolder = document.getElementById("urlHolder");
+		
+		titleHolder.innerHTML = post.title;
+		postHolder.innerHTML = decodeEntities(post.selftext_html);
+		urlHolder.href = post.url;
+		urlHolder.innerHTML = post.url;
+	  } else {
+		// We reached our target server, but it returned an error
+
+	  }
+	};
+
+	request.onerror = function() {
+	  // There was a connection error of some sort
+	};
+
+	request.send();
+}
+
+function decodeEntities(encodedString) {
+    var textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedString;
+    return textArea.value;
+}
+</script>
+</head>
+<body>
+<h3 id="titleHolder"></h3>
+<div id="postHolder"></div>
+<a href="#" id="urlHolder"></a>
+</body>
+</html>
