@@ -20,11 +20,13 @@ def url(name):
         link = "https://" + link
     return redirect(link)
 
-@app.route('/', methods=['GET'])
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    if (request.method == 'GET' and request.args.get('inputurl') and request.args.get('fillertype')):
-        url = request.args.get('inputurl')
-        filler = request.args.get('fillertype')
+    if (request.method == 'POST' and request.form.get('inputurl') and request.form.get('fillertype')):
+        url = request.form.get('inputurl')
+        filler = request.form.get('fillertype')
+        print(url, filler)
         if (filler == 'latin'):
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)

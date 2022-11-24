@@ -146,7 +146,7 @@
   <body>
     <div class="main-block">
       <h1>Longer Url</h1>
-      <form action="/">
+      <form action="/#" method="POST">
         <hr>
         <label id="icon" for="name"><i class="fas fa-link"></i></label>
         <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" required/>
@@ -166,10 +166,17 @@
         {% endif %}
 
 		<hr>
-    {% if not show %}
-		<p type="outputtext" name="outputurl" id="outputurl" >{{ extended }} </p>
-    {% endif %}
       </form>
+      {% if not show %}
+        <form action="/#" method="GET">
+          <div class="btn-block">
+            <p>Waste more time</a>?</p>
+            <button type="submit" href="/">Lengthen another url</button>
+          </div>
+          <p type="outputtext" name="outputurl" id="outputurl" >{{ extended }} </p>
+          <hr>
+        </form>
+      {% endif %}
     </div>
   </body>
 </html>
