@@ -11,6 +11,7 @@ app = Flask(__name__)
 db_path = join(dirname(dirname(abspath(__file__))), 'bot/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
+DOMAIN = 'http://127.0.0.1:5000/'
 
 @app.route('/<name>')
 def url(name):
@@ -34,7 +35,7 @@ def index():
             extended = extended.replace('.', '')
             extended = extended.replace(',', '')
             insertLink(url, extended)
-            return render_template('index.html', show=False, url=url, extended=("http://127.0.0.1:5000/" + extended))
+            return render_template('index.html', show=False, url=url, extended=(f"{DOMAIN}" + extended))
     return render_template('index.html', show=True)
 
 try:
