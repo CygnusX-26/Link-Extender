@@ -4,12 +4,20 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from bot.sql_methods import getLink, getAll, insertLink
 import validators
 import lorem
+import sqlite3
+from os.path import join, dirname, abspath
 
 app = Flask(__name__)
+db_path = join(dirname(dirname(abspath(__file__))), 'bot/data/links.db')
+conn = sqlite3.connect(db_path, check_same_thread=False)
+c = conn.cursor()
 
 @app.route('/<name>')
 def url(name):
-    return redirect(getLink(name)[0])
+    link = getLink(name)[0]
+    if (not(link.startswith("http://") or link.startswith("https://"))):
+        link = "https://" + link
+    return redirect(link)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -29,5 +37,12 @@ def index():
             return render_template('index.html', show=False, url=url, extended=("http://127.0.0.1:5000/" + extended))
     return render_template('index.html', show=True)
 
+try:
+    c.execute("""CREATE TABLE links (
+            url text,
+            extended text
+            )""")
+except:
+    pass
 
 app.run()

@@ -34,7 +34,6 @@ try:
             url text,
             extended text
             )""")
-    c.close()
 except:
     pass
 
