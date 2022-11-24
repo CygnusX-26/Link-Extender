@@ -17,7 +17,7 @@ def index():
         url = request.args.get('inputurl')
         filler = request.args.get('fillertype')
         if (filler == 'latin'):
-            if not validators.url(url):
+            if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
             extended = ""
             for _ in range(5):
