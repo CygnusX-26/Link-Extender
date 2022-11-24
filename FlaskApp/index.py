@@ -11,9 +11,9 @@ app = Flask(__name__)
 db_path = join(dirname(dirname(abspath(__file__))), 'bot/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
-DOMAIN = 'http://127.0.0.1:5000/'
+DOMAIN = 'http://127.0.0.1:5000/url/'
 
-@app.route('/<name>')
+@app.route('/url/<name>')
 def url(name):
     link = getLink(name)[0]
     if (not(link.startswith("http://") or link.startswith("https://"))):
@@ -28,6 +28,10 @@ def index():
         if (filler == 'latin'):
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
+            all = getAll()
+            for i in all:
+                if (i[0] == url):
+                    return render_template('index.html', show=False, extended=DOMAIN + i[1])
             extended = ""
             for _ in range(5):
                 extended += lorem.paragraph()
@@ -35,7 +39,7 @@ def index():
             extended = extended.replace('.', '')
             extended = extended.replace(',', '')
             insertLink(url, extended)
-            return render_template('index.html', show=False, url=url, extended=(f"{DOMAIN}" + extended))
+            return render_template('index.html', show=False, url=url, extended=DOMAIN + extended)
     return render_template('index.html', show=True)
 
 try:
