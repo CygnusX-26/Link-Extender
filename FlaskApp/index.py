@@ -1,5 +1,4 @@
 from flask import Flask, redirect, render_template, request, url_for
-from emoji import random_emoji
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from bot.sql_methods import getLink, getAll, insertLink
@@ -27,13 +26,7 @@ def index():
             extended = extended.replace('.', '')
             extended = extended.replace(',', '')
             insertLink(url, extended)
-            return render_template('index.html', show=False, url=url, extended=extended)
-        elif (filler == 'copypasta'):
-            extended = ""
-            while True:
-                extended += random_emoji()[0]
-                break
-            pass
+            return render_template('index.html', show=False, url=url, extended=("http://127.0.0.1:5000/" + extended))
     return render_template('index.html', show=True)
 
 
