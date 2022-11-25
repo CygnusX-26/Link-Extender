@@ -84,7 +84,7 @@ def index():
             res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
             extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
             extended = processInput(extended)
-            processed = print(urllib.parse.quote(extended))
+            processed = urllib.parse.quote(extended.encode('utf8'))
             print(processed)
             insertLink(url, processed)
             return render_template('index.html', show=False, url=url, extended=DOMAIN + urllib.parse.unquote(extended))
