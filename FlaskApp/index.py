@@ -9,6 +9,7 @@ from os.path import join, dirname, abspath
 import requests
 import requests.auth
 import json
+import random
 
 USERID = os.getenv("CLIENT_ID")
 SECRET = os.getenv("SECRET_KEY")
@@ -19,6 +20,7 @@ db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
 DOMAIN = 'http://127.0.0.1:5000/url/'
+random.seed()
 
 def getAuth():
     #get token from reddit
@@ -34,10 +36,7 @@ def getAuth():
 
 headers = getAuth()
 
-res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
-
-print(res.json()[0]['data']['children'][0]['data']['selftext'])  # let's see what we get
-print(res.json()[0]['data']['children'][0]['data']['title'])
+print()
 @app.route('/url/<name>')
 def url(name):
     link = getLink(name)[0]
@@ -67,6 +66,27 @@ def index():
             extended = extended.replace(',', '')
             insertLink(url, extended)
             return render_template('index.html', show=False, url=url, extended=DOMAIN + extended)
+        if (filler == 'copypasta'):
+            if not (validators.url(url) or validators.domain(url)):
+                return render_template('index.html', show=True)
+            all = getAll()
+            for i in all:
+                if (i[0] == url):
+                    return render_template('index.html', show=False, extended=DOMAIN + i[1])
+            res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
+            extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
+            if len(extended) > 1800:  #arbitrary length chosen to suite most web browsers
+                offset = random.randint(0,len(extended) - 1800)
+                extended = extended[0 + offset:1800 + offset]
+            size = 16
+            chunks = [extended[x:x+size] for x in range(0, len(extended), size)]#size chosen to be less than 64, the limit for idna
+            processed = []
+            for chunk in chunks:
+                print(chunk)
+                processed.append(chunk.encode(encoding="idna"))
+            processed = b''.join(processed)
+            insertLink(url, processed)
+            return render_template('index.html', show=False, url=url, extended=DOMAIN + processed.decode("idna"))
     return render_template('index.html', show=True)
 
 try:
@@ -76,5 +96,26 @@ try:
             )""")
 except:
     pass
+res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
 
-# app.run()
+#tester text
+
+"""#extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
+extended = "😂"
+if len(extended) > 1800:  #arbitrary length chosen to suite most web browsers
+    offset = random.randint(0,len(extended) - 1800)
+    extended = extended[0 + offset:1800 + offset]
+size = 16
+chunks = [extended[x:x+size] for x in range(0, len(extended), size)]#size chosen to be less than 64, the limit for idna
+processed = []
+for chunk in chunks:
+    print(chunk)
+    processed.append(chunk.encode(encoding="idna"))
+processed = b''.join(processed)
+print("final results")
+print(processed)
+print("back to uni")
+print(processed.decode("idna"))"""
+
+
+app.run()
