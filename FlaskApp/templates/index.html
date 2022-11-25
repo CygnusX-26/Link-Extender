@@ -127,6 +127,11 @@
       margin-top: 10px;
       text-align: center;
       }
+      .btn-block-inform {
+      margin-top: 10px;
+      text-align: center;
+      margin: 0 30px;
+      }
       button {
       width: 100%;
       padding: 10px 0;
@@ -146,10 +151,10 @@
   <body>
     <div class="main-block">
       <h1>Longer Url</h1>
-      <form action="/#" method="POST">
+      <form action="/" method="POST">
         <hr>
         <label id="icon" for="name"><i class="fas fa-link"></i></label>
-        <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" required/>
+        <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com"/>
         <hr>
         <div class="fillertype">
           <input type="radio" value="latin" id="latin" name="fillertype" checked/>
@@ -166,17 +171,37 @@
         {% endif %}
 
 		<hr>
-      </form>
       {% if not show %}
-        <form action="/#" method="GET">
+        <form action="/" method="GET">
           <div class="btn-block">
-            <p>Waste more time</a>?</p>
+            <p>Want to waste more time</a>?</p>
             <button type="submit" href="/">Lengthen another url</button>
           </div>
+          <hr>
+        </form>
+        <div class="btn-block-inform" id="copyButton">
+          <button onclick="copyContent()">Click to Copy</button>
+        </div>
+        <form>
           <p type="outputtext" name="outputurl" id="outputurl" >{{ extended }} </p>
           <hr>
         </form>
       {% endif %}
     </div>
   </body>
+  <script>
+      let text = document.getElementById('outputurl').innerHTML;
+      const btn = document.getElementById('copyButton');
+      const copyContent = async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          console.log('Content copied to clipboard');
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+      }
+      btn.addEventListener('click', function onClick() {
+        btn.innerHTML = 'Copied to clipboard!';
+      });
+  </script>
 </html>
