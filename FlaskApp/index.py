@@ -36,8 +36,8 @@ headers = getAuth()
 
 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
 
-print(res.json())  # let's see what we get
-
+print(res.json()[0]['data']['children'][0]['data']['selftext'])  # let's see what we get
+print(res.json()[0]['data']['children'][0]['data']['title'])
 @app.route('/url/<name>')
 def url(name):
     link = getLink(name)[0]
@@ -77,4 +77,4 @@ try:
 except:
     pass
 
-app.run()
+# app.run()
