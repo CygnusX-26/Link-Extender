@@ -6,12 +6,37 @@ import validators
 import lorem
 import sqlite3
 from os.path import join, dirname, abspath
+import requests
+import requests.auth
+import json
 
+USERID = os.getenv("CLIENT_ID")
+SECRET = os.getenv("SECRET_KEY")
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
 app = Flask(__name__)
 db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
 DOMAIN = 'http://127.0.0.1:5000/url/'
+
+def getAuth():
+    #get token from reddit
+    auth = requests.auth.HTTPBasicAuth(USERID, SECRET)
+    data = {'grant_type': 'password',
+            'username': USERNAME,
+            'password': PASSWORD}
+    headers = {'User-Agent': 'LongerUrl/0.1'}
+    res = requests.post('https://www.reddit.com/api/v1/access_token', auth=auth, data=data, headers=headers)
+    TOKEN = res.json()['access_token']
+    headers = {**headers, **{'Authorization': f"bearer {TOKEN}"}}
+    return headers
+
+headers = getAuth()
+
+res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
+
+print(res.json())  # let's see what we get
 
 @app.route('/url/<name>')
 def url(name):
