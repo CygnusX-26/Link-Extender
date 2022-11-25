@@ -5,7 +5,7 @@ import sqlite3
 from os.path import join, dirname, abspath
 
 
-db_path = join(dirname(dirname(abspath(__file__))), 'bot/data/links.db')
+db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
 

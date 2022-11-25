@@ -8,7 +8,7 @@ import sqlite3
 from os.path import join, dirname, abspath
 
 app = Flask(__name__)
-db_path = join(dirname(dirname(abspath(__file__))), 'bot/data/links.db')
+db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
 DOMAIN = 'http://127.0.0.1:5000/url/'
