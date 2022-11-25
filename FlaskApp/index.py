@@ -6,6 +6,7 @@ import validators
 import lorem
 import sqlite3
 from os.path import join, dirname, abspath
+import requests
 
 app = Flask(__name__)
 db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
