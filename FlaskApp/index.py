@@ -34,7 +34,7 @@ def getAuth():
 
 headers = getAuth()
 
-res = requests.get("https://oauth.reddit.com/r/copypasta/hot", headers=headers)
+res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
 
 print(res.json())  # let's see what we get
 
