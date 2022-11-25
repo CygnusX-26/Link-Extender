@@ -1,65 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>LongerUrl</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-	<style>
-      html, body {
+
+<head>
+  <title>LongerUrl</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+    integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <style>
+    html,
+    body {
       display: flex;
       justify-content: center;
       height: 100%;
-      }
-	  body { 
-	  background-image: url('/static/layeredbackground.png');
-	  background-size: cover;
-	  background-size: 100% 100%;
-	  }
-      body, div, h1, form, input, p { 
+    }
+
+    body {
+      background-image: url('/static/layeredbackground.png');
+      background-size: cover;
+      background-size: 100% 100%;
+    }
+
+    body,
+    div,
+    h1,
+    form,
+    input,
+    p {
       padding: 0;
       margin: 0;
       outline: none;
       font-family: Roboto, Arial, sans-serif;
       font-size: 16px;
       color: #666;
-      }
-      h1 {
+    }
+
+    h1 {
       padding: 10px 0;
       font-size: 32px;
       font-weight: 300;
       text-align: center;
-      }
-      p {
+    }
+
+    p {
       font-size: 12px;
-      }
-      hr {
+    }
+
+    hr {
       color: #a9a9a9;
       opacity: 0.3;
-      }
-      .main-block {
-      max-width: 340px; 
-      min-height: 460px; 
+    }
+
+    .main-block {
+      max-width: 340px;
+      min-height: 460px;
       padding: 10px 0;
       margin: auto;
-      border-radius: 5px; 
+      border-radius: 5px;
       border: solid 1px #ccc;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
-      background: #ebebeb; 
-      }
-      form {
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+      background: #ebebeb;
+    }
+
+    form {
       margin: 0 30px;
-      }
-      .account-type, .gender {
+    }
+
+    .account-type,
+    .gender {
       margin: 15px 0;
-      }
-      input[type=radio] {
+    }
+
+    input[type=radio] {
       display: none;
-      }
-      label#icon {
+    }
+
+    label#icon {
       margin: 0;
       border-radius: 5px 0 0 5px;
-      }
-      label.radio {
+    }
+
+    label.radio {
       position: relative;
       display: inline-block;
       padding-top: 4px;
@@ -67,8 +87,9 @@
       text-indent: 30px;
       overflow: visible;
       cursor: pointer;
-      }
-      label.radio:before {
+    }
+
+    label.radio:before {
       content: "";
       position: absolute;
       top: 2px;
@@ -77,8 +98,9 @@
       height: 20px;
       border-radius: 50%;
       background: #1c87c9;
-      }
-      label.radio:after {
+    }
+
+    label.radio:after {
       content: "";
       position: absolute;
       width: 9px;
@@ -90,118 +112,128 @@
       border-right: none;
       transform: rotate(-45deg);
       opacity: 0;
-      }
-      input[type=radio]:checked + label:after {
+    }
+
+    input[type=radio]:checked+label:after {
       opacity: 1;
-      }
-      input[type=text] {
+    }
+
+    input[type=text] {
       width: calc(100% - 57px);
       height: 36px;
       margin: 13px 0 0 -5px;
-      padding-left: 10px; 
+      padding-left: 10px;
       border-radius: 0 5px 5px 0;
-      border: solid 1px #cbc9c9; 
-      box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
-      background: #fff; 
-      }
-      p[type=outputtext] {
-	  width: 100%;
+      border: solid 1px #cbc9c9;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+      background: #fff;
+    }
+
+    p[type=outputtext] {
+      width: 100%;
       height: fit-content;
       margin: 13px 0 0 -5px;
-      padding-left: 10px; 
+      padding-left: 10px;
       border-radius: 5px;
-      border: solid 1px #cbc9c9; 
-      box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
-      background: #fff; 
-	  word-wrap: break-word;
-      }
-      #icon {
+      border: solid 1px #cbc9c9;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+      background: #fff;
+      word-wrap: break-word;
+    }
+
+    #icon {
       display: inline-block;
       padding: 9.3px 15px;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
       background: #1c87c9;
       color: #fff;
       text-align: center;
-      }
-      .btn-block {
+    }
+
+    .btn-block {
       margin-top: 10px;
       text-align: center;
-      }
-      .btn-block-inform {
+    }
+
+    .btn-block-inform {
       margin-top: 10px;
       text-align: center;
       margin: 0 30px;
-      }
-      button {
+    }
+
+    button {
       width: 100%;
       padding: 10px 0;
       margin: 10px auto;
-      border-radius: 5px; 
+      border-radius: 5px;
       border: none;
-      background: #1c87c9; 
+      background: #1c87c9;
       font-size: 14px;
       font-weight: 600;
       color: #fff;
-      }
-      button:hover {
-      background: #26a9e0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="main-block">
-      <h1>Longer Url</h1>
-      <form action="/" method="POST">
-        <hr>
-        <label id="icon" for="name"><i class="fas fa-link"></i></label>
-        <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com"/>
-        <hr>
-        <div class="fillertype">
-          <input type="radio" value="latin" id="latin" name="fillertype" checked/>
-          <label for="latin" class="radio">Latin</label>
-          <input type="radio" value="copypasta" id="copypasta" name="fillertype" />
-          <label for="copypasta" class="radio">Copypasta</label>
-        </div>
-        {% if show %}
-        <hr>
-        <div class="btn-block">
-          <p>By clicking Submit, you have wasted your time.</p>
-          <button type="submit" href="/">Submit</button>
-        </div>
-        {% endif %}
+    }
 
-		<hr>
-      {% if not show %}
-        <form action="/" method="GET">
-          <div class="btn-block">
-            <p>Want to waste more time</a>?</p>
-            <button type="submit" href="/">Lengthen another url</button>
-          </div>
-          <hr>
-        </form>
-        <div class="btn-block-inform" id="copyButton">
-          <button onclick="copyContent()">Click to Copy</button>
-        </div>
-        <form>
-          <p type="outputtext" name="outputurl" id="outputurl" ><a href = "{{extended}}">{{ extended }}</a> </p>
-          <hr>
-        </form>
+    button:hover {
+      background: #26a9e0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-block">
+    <h1>Longer Url</h1>
+    <form action="/" method="POST">
+      <hr>
+      <label id="icon" for="name"><i class="fas fa-link"></i></label>
+      <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" />
+      <hr>
+      <div class="fillertype">
+        <input type="radio" value="latin" id="latin" name="fillertype" checked />
+        <label for="latin" class="radio">Latin</label>
+        <input type="radio" value="copypasta" id="copypasta" name="fillertype" />
+        <label for="copypasta" class="radio">Copypasta</label>
+      </div>
+      {% if show %}
+      <hr>
+      <div class="btn-block">
+        <p>By clicking Submit, you have wasted your time.</p>
+        <button type="submit" href="/">Submit</button>
+      </div>
       {% endif %}
-    </div>
-  </body>
-  <script>
-      let text = document.getElementById('outputurl').innerHTML;
-      const btn = document.getElementById('copyButton');
-      const copyContent = async () => {
-        try {
-          await navigator.clipboard.writeText(text);
-          console.log('Content copied to clipboard');
-        } catch (err) {
-          console.error('Failed to copy: ', err);
-        }
-      }
-      btn.addEventListener('click', function onClick() {
-        btn.innerHTML = 'Copied to clipboard!';
-      });
-  </script>
+
+      <hr>
+      {% if not show %}
+      <form action="/" method="GET">
+        <div class="btn-block">
+          <p>Want to waste more time</a>?</p>
+          <button type="submit" href="/">Lengthen another url</button>
+        </div>
+        <hr>
+      </form>
+      <div class="btn-block-inform" id="copyButton">
+        <button onclick="copyContent()">Click to Copy</button>
+      </div>
+      <form>
+        <p type="outputtext" name="outputurl" id="outputurl"><a href="{{extended}}">{{ extended }}</a> </p>
+        <hr>
+      </form>
+      {% endif %}
+  </div>
+</body>
+<script>
+  let text = document.getElementById('outputurl').innerHTML;
+  const btn = document.getElementById('copyButton');
+  const copyContent = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log('Content copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+  btn.addEventListener('click', function onClick() {
+    btn.innerHTML = 'Copied to clipboard!';
+  });
+</script>
+
 </html>
