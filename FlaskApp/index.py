@@ -10,6 +10,7 @@ import requests
 import requests.auth
 import json
 import random
+import urllib.parse
 
 USERID = os.getenv("CLIENT_ID")
 SECRET = os.getenv("SECRET_KEY")
@@ -36,7 +37,14 @@ def getAuth():
 
 headers = getAuth()
 
-print()
+def processInput(input: str) -> str:
+    output = input
+    output = output.replace(' ', '-')
+    output = output.replace('.', '')
+    output = output.replace(',', '')
+    return output
+
+
 @app.route('/url/<name>')
 def url(name):
     link = getLink(name)[0]
@@ -75,18 +83,11 @@ def index():
                     return render_template('index.html', show=False, extended=DOMAIN + i[1])
             res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
             extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
-            if len(extended) > 1800:  #arbitrary length chosen to suite most web browsers
-                offset = random.randint(0,len(extended) - 1800)
-                extended = extended[0 + offset:1800 + offset]
-            size = 16
-            chunks = [extended[x:x+size] for x in range(0, len(extended), size)]#size chosen to be less than 64, the limit for idna
-            processed = []
-            for chunk in chunks:
-                print(chunk)
-                processed.append(chunk.encode(encoding="idna"))
-            processed = b''.join(processed)
+            extended = processInput(extended)
+            processed = print(urllib.parse.quote(extended))
+            print(processed)
             insertLink(url, processed)
-            return render_template('index.html', show=False, url=url, extended=DOMAIN + processed.decode("idna"))
+            return render_template('index.html', show=False, url=url, extended=DOMAIN + urllib.parse.unquote(extended))
     return render_template('index.html', show=True)
 
 try:
@@ -99,9 +100,11 @@ except:
 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
 
 #tester text
-
-"""#extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
+"""
 extended = "😂"
+print(urllib.parse.quote(extended))
+
+
 if len(extended) > 1800:  #arbitrary length chosen to suite most web browsers
     offset = random.randint(0,len(extended) - 1800)
     extended = extended[0 + offset:1800 + offset]
