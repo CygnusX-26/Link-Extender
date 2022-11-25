@@ -1,7 +1,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from bot.sql_methods import getLink, getAll, insertLink
+from bot.sql_methods import getLink, getAll, insertLink, getLinkCopy, getAllCopy, insertLinkCopy
 import validators
 import lorem
 import sqlite3
@@ -20,7 +20,12 @@ app = Flask(__name__)
 db_path = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/links.db')
 conn = sqlite3.connect(db_path, check_same_thread=False)
 c = conn.cursor()
+db_path2 = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/copypasta.db')
+conn2 = sqlite3.connect(db_path2, check_same_thread=False)
+c2 = conn2.cursor()
+
 DOMAIN = 'http://127.0.0.1:5000/url/'
+DOMAINPASTA = 'http://127.0.0.1:5000/urlpasta/'
 random.seed()
 
 def getAuth():
@@ -47,7 +52,14 @@ def processInput(input: str) -> str:
 
 @app.route('/url/<name>')
 def url(name):
-    link = getLink(name)[0]
+    link:str = getLink(name)[0]
+    if (not(link.startswith("http://") or link.startswith("https://"))):
+        link = "https://" + link
+    return redirect(link)
+
+@app.route('/urlpasta/<name>')
+def urlPasta(name: str):
+    link: str = getLinkCopy(urllib.parse.unquote(name))[0] 
     if (not(link.startswith("http://") or link.startswith("https://"))):
         link = "https://" + link
     return redirect(link)
@@ -77,21 +89,28 @@ def index():
         if (filler == 'copypasta'):
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
-            all = getAll()
+            all = getAllCopy()
             for i in all:
                 if (i[0] == url):
-                    return render_template('index.html', show=False, extended=DOMAIN + i[1])
+                    return render_template('index.html', show=False, extended=DOMAINPASTA + i[1])
             res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
             extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
             extended = processInput(extended)
-            processed = urllib.parse.quote(extended.encode('utf8'))
-            print(processed)
-            insertLink(url, processed)
-            return render_template('index.html', show=False, url=url, extended=DOMAIN + urllib.parse.unquote(extended))
+            processed = urllib.parse.quote(extended)
+            insertLinkCopy(url, extended)
+            return render_template('index.html', show=False, url=url, extended=DOMAINPASTA + processed)
     return render_template('index.html', show=True)
 
 try:
     c.execute("""CREATE TABLE links (
+            url text,
+            extended text
+            )""")
+except:
+    pass
+
+try:
+    c2.execute("""CREATE TABLE copypasta (
             url text,
             extended text
             )""")
