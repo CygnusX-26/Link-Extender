@@ -103,7 +103,8 @@ def index():
             processed = urllib.parse.quote(extended)
             insertLinkCopy(url, extended)
             return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + urllib.parse.unquote(processed),)
-    return render_template('index.html', show=True)
+    else:
+        return render_template('index.html', show=True)
 
 try:
     c.execute("""CREATE TABLE links (
