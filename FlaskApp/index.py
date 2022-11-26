@@ -97,8 +97,13 @@ def index():
             for i in all:
                 if (i[0] == url):
                     return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
-            res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
-            extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
+            try:
+                res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
+                extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
+            except:
+                headers = getAuth()
+                res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
+                extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # actually get the request now
             extended = processInput(extended)
             processed = urllib.parse.quote(extended)
             insertLinkCopy(url, extended)
