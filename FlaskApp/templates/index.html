@@ -51,7 +51,7 @@
     }
 
     .main-block {
-      max-width: 340px;
+      width: 340px;
       min-height: 460px;
       padding: 10px 0;
       margin: auto;
@@ -188,15 +188,15 @@
       <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" {% if not show %} value="{{inputurl}}" {% endif %}/>
       <hr>
       <div class="fillertype">
-        <input type="radio" value="latin" id="latin" name="fillertype" checked />
+        <input type="radio" value="latin" id="latin" name="fillertype" onclick="latinClicked()" checked />
         <label for="latin" class="radio">Latin</label>
-        <input type="radio" value="copypasta" id="copypasta" name="fillertype" />
+        <input type="radio" value="copypasta" id="copypasta" name="fillertype" onclick="pastaClicked()"/>
         <label for="copypasta" class="radio">Copypasta</label>
       </div>
       {% if show %}
       <hr>
       <div class="btn-block">
-        <p>By clicking Submit, you have wasted your time.</p>
+        <p id = "warning-text">By clicking Submit, you have wasted your time.</p>
         <button type="submit" href="/">Submit</button>
       </div>
       {% endif %}
@@ -231,9 +231,18 @@
       console.error('Failed to copy: ', err);
     }
   }
+  const latinClicked = async() => {
+    document.getElementById("warning-text").innerHTML = "By clicking Submit, you have wasted your time.";
+  }
+
+  const pastaClicked = async() => {
+    document.getElementById("warning-text").innerHTML = "Copypastas may contain offensive content.";
+  }
   btn.addEventListener('click', function onClick() {
     btn.innerHTML = 'Copied to clipboard!';
   });
+
+  
 </script>
 
 </html>
