@@ -102,7 +102,7 @@ def index():
             extended = processInput(extended)
             processed = urllib.parse.quote(extended)
             insertLinkCopy(url, extended)
-            return render_template('index.html', show=False, url=url, extended=DOMAINPASTA + processed)
+            return render_template('index.html', show=False, url=url, extended=DOMAINPASTA + urllib.parse.unquote(processed))
     return render_template('index.html', show=True)
 
 try:
