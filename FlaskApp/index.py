@@ -79,7 +79,7 @@ def index():
             all = getAll()
             for i in all:
                 if (i[0] == url):
-                    return render_template('index.html', show=False, extended=DOMAIN + i[1])
+                    return render_template('index.html', show=False, inputurl=url, extended=DOMAIN + i[1])
             extended = ""
             for _ in range(5):
                 extended += lorem.paragraph()
@@ -87,7 +87,7 @@ def index():
             extended = extended.replace('.', '')
             extended = extended.replace(',', '')
             insertLink(url, extended)
-            return render_template('index.html', show=False, url=url, extended=DOMAIN + extended)
+            return render_template('index.html', show=False, inputurl=url, extended=DOMAIN + extended)
         if (filler == 'copypasta'):
             if (not(url.startswith("http://") or url.startswith("https://"))):
                 url = "https://" + url
@@ -96,13 +96,13 @@ def index():
             all = getAllCopy()
             for i in all:
                 if (i[0] == url):
-                    return render_template('index.html', show=False, extended=DOMAINPASTA + i[1])
+                    return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
             res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
             extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
             extended = processInput(extended)
             processed = urllib.parse.quote(extended)
             insertLinkCopy(url, extended)
-            return render_template('index.html', show=False, url=url, extended=DOMAINPASTA + urllib.parse.unquote(processed))
+            return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + urllib.parse.unquote(processed),)
     return render_template('index.html', show=True)
 
 try:

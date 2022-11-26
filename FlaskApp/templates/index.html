@@ -185,7 +185,7 @@
     <form action="/" method="POST">
       <hr>
       <label id="icon" for="name"><i class="fas fa-link"></i></label>
-      <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" />
+      <input type="text" name="inputurl" id="inputurl" placeholder="exampleurl.com" {% if not show %} value="{{inputurl}}" {% endif %}/>
       <hr>
       <div class="fillertype">
         <input type="radio" value="latin" id="latin" name="fillertype" checked />
