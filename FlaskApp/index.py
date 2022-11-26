@@ -11,6 +11,7 @@ import requests.auth
 import json
 import random
 import urllib.parse
+import secrets
 
 USERID = os.getenv("CLIENT_ID")
 SECRET = os.getenv("SECRET_KEY")
@@ -77,15 +78,17 @@ def index():
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
             all = getAll()
-            for i in all:
-                if (i[0] == url):
-                    return render_template('index.html', show=False, inputurl=url, extended=DOMAIN + i[1])
             extended = ""
             for _ in range(5):
                 extended += lorem.paragraph()
             extended = extended.replace(' ', '-')
             extended = extended.replace('.', '')
             extended = extended.replace(',', '')
+            for i in all:
+                if (i[0] == url):
+                    return render_template('index.html', show=False, inputurl=url, extended=DOMAIN + i[1])
+                if (i[1] == extended):
+                    extended = extended + secrets.token_hex(1)
             insertLink(url, extended)
             return render_template('index.html', show=False, inputurl=url, extended=DOMAIN + extended)
         if (filler == 'copypasta'):
@@ -94,9 +97,6 @@ def index():
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
             all = getAllCopy()
-            for i in all:
-                if (i[0] == url):
-                    return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
             try:
                 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
                 extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # let's see what we get
@@ -104,6 +104,11 @@ def index():
                 headers = getAuth()
                 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
                 extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # actually get the request now
+            for i in all:
+                if (i[0] == url):
+                    return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
+                if (i[1] == extended):
+                    extended = extended + secrets.token_hex(1)
             extended = processInput(extended)
             processed = urllib.parse.quote(extended)
             insertLinkCopy(url, extended)
