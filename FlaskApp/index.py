@@ -72,6 +72,8 @@ def index():
         filler = request.form.get('fillertype')
         print(url, filler)
         if (filler == 'latin'):
+            if (not(url.startswith("http://") or url.startswith("https://"))):
+                url = "https://" + url
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
             all = getAll()
@@ -87,6 +89,8 @@ def index():
             insertLink(url, extended)
             return render_template('index.html', show=False, url=url, extended=DOMAIN + extended)
         if (filler == 'copypasta'):
+            if (not(url.startswith("http://") or url.startswith("https://"))):
+                url = "https://" + url
             if not (validators.url(url) or validators.domain(url)):
                 return render_template('index.html', show=True)
             all = getAllCopy()
