@@ -6,4 +6,6 @@ random copypasta using reddit api
 
 uses docker, flask, lorem, reddit api, and basic html/css.
 
-Made over Thanksgiving Weekend in the midwest.
+Made over Thanksgiving Weekend in the midwest by Frank and Neil.
+
+Server (TODO) hosted on Sangmin's computer.
