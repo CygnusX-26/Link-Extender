@@ -25,8 +25,8 @@ db_path2 = join(dirname(dirname(abspath(__file__))), 'FlaskApp/data/copypasta.db
 conn2 = sqlite3.connect(db_path2, check_same_thread=False)
 c2 = conn2.cursor()
 
-DOMAIN = 'http://127.0.0.1:5000/url/'
-DOMAINPASTA = 'http://127.0.0.1:5000/urlpasta/'
+DOMAIN = os.getenv("DOMAIN") + '/url/'
+DOMAINPASTA = os.getenv("DOMAIN") + '/urlpasta/' 
 random.seed()
 
 def getAuth():
