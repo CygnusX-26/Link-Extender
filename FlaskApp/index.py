@@ -60,7 +60,7 @@ def url(name):
 
 @app.route('/urlpasta/<name>')
 def urlPasta(name: str):
-    link: str = getLinkCopy(urllib.parse.unquote(name))[0] 
+    link: str = getLinkCopy(urllib.parse.quote(name))[0] 
     if (not(link.startswith("http://") or link.startswith("https://"))):
         link = "https://" + link
     return redirect(link)
@@ -111,7 +111,7 @@ def index():
                     extended = extended + secrets.token_hex(1)
             extended = processInput(extended)
             processed = urllib.parse.quote(extended)
-            insertLinkCopy(url, extended)
+            insertLinkCopy(url, processed)
             return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + urllib.parse.unquote(processed),)
     else:
         return render_template('index.html', show=True)
