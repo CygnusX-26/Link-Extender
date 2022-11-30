@@ -12,6 +12,7 @@ import json
 import random
 import urllib.parse
 import secrets
+import re
 
 USERID = os.getenv("CLIENT_ID")
 SECRET = os.getenv("SECRET_KEY")
@@ -46,8 +47,10 @@ headers = getAuth()
 def processInput(input: str) -> str:
     output = input
     output = output.replace(' ', '-')
-    output = output.replace('.', '')
     output = output.replace(',', '')
+    output = output.replace('/', '')
+    output = output.replace('?', '')
+    output = re.sub("([&$+,:;=?@#\s<>[]{}[/]|\^%])+", "", output)
     return output
 
 
@@ -62,8 +65,8 @@ def url(name):
 def urlPasta(name: str):
     try:
         link: str = getLinkCopy(urllib.parse.quote(name))[0] 
-    except:
-        return ("Oops, looks like you had a bad copypasta. Unlucky!")
+    except Exception as e:
+        return ("Oops, looks like you had a bad copypasta. Unlucky!" + urllib.parse.quote(name) + "\r\n" +str(e))
     if (not(link.startswith("http://") or link.startswith("https://"))):
         link = "https://" + link
     return redirect(link)
