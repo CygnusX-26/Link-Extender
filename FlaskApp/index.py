@@ -60,7 +60,10 @@ def url(name):
 
 @app.route('/urlpasta/<name>')
 def urlPasta(name: str):
-    link: str = getLinkCopy(urllib.parse.quote(name))[0] 
+    try:
+        link: str = getLinkCopy(urllib.parse.quote(name))[0] 
+    except:
+        return ("Oops, looks like you had a bad copypasta. Unlucky!")
     if (not(link.startswith("http://") or link.startswith("https://"))):
         link = "https://" + link
     return redirect(link)
@@ -155,4 +158,4 @@ print("back to uni")
 print(processed.decode("idna"))"""
 
 
-app.run(host='0.0.0.0', port='5000')
+app.run(host='0.0.0.0', port='443')
