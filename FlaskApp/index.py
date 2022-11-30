@@ -112,9 +112,8 @@ def index():
             for i in all:
                 if (i[0] == url):
                     return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
-                if (i[1] == extended):
-                    extended = extended + secrets.token_hex(1)
-
+                if (i[1] == processed):
+                    processed = processed + secrets.token_hex(1)
             insertLinkCopy(url, processed)
             return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + urllib.parse.unquote(processed),)
     else:
