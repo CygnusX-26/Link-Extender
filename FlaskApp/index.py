@@ -50,7 +50,8 @@ def processInput(input: str) -> str:
     output = output.replace(',', '')
     output = output.replace('/', '')
     output = output.replace('?', '')
-    output = re.sub(r"([&$+,:;=?@#\s<>[]{}[/]|\^%])+", "", output)
+    for char in r"([&$+,:;=?@#\<>[]{}[/]|\^%])+":
+        output = output.replace(char, '')
     return output
 
 
@@ -138,6 +139,8 @@ try:
 except:
     pass
 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
+
+print(processInput("&^*(^%^asdf"))
 
 
 app.run(host='0.0.0.0', port='443')
