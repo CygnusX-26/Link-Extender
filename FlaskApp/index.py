@@ -107,13 +107,14 @@ def index():
                 headers = getAuth()
                 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
                 extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # actually get the request now
+            extended = processInput(extended)
+            processed = urllib.parse.quote(extended)
             for i in all:
                 if (i[0] == url):
                     return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
                 if (i[1] == extended):
                     extended = extended + secrets.token_hex(1)
-            extended = processInput(extended)
-            processed = urllib.parse.quote(extended)
+
             insertLinkCopy(url, processed)
             return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + urllib.parse.unquote(processed),)
     else:
