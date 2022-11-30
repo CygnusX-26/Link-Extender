@@ -50,7 +50,7 @@ def processInput(input: str) -> str:
     output = output.replace(',', '')
     output = output.replace('/', '')
     output = output.replace('?', '')
-    output = re.sub("([&$+,:;=?@#\s<>[]{}[/]|\^%])+", "", output)
+    output = re.sub(r"([&$+,:;=?@#\s<>[]{}[/]|\^%])+", "", output)
     return output
 
 
@@ -64,7 +64,7 @@ def url(name):
 @app.route('/urlpasta/<name>')
 def urlPasta(name: str):
     try:
-        link: str = getLinkCopy(urllib.parse.quote(name))[0] 
+        link: str = getLinkCopy(urllib.parse.quote(name, encoding='utf-8'))[0] 
     except Exception as e:
         return ("Oops, looks like you had a bad copypasta. Unlucky!" + urllib.parse.quote(name) + "\r\n" +str(e))
     if (not(link.startswith("http://") or link.startswith("https://"))):
@@ -111,7 +111,7 @@ def index():
                 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
                 extended = res.json()[0]['data']['children'][0]['data']['title'] + ": " + res.json()[0]['data']['children'][0]['data']['selftext']  # actually get the request now
             extended = processInput(extended)
-            processed = urllib.parse.quote(extended)
+            processed = urllib.parse.quote(extended, encoding='utf-8')
             for i in all:
                 if (i[0] == url):
                     return render_template('index.html', show=False, inputurl=url, extended=DOMAINPASTA + i[1])
@@ -138,27 +138,6 @@ try:
 except:
     pass
 res = requests.get("https://oauth.reddit.com/r/copypasta/random", headers=headers)
-
-#tester text
-"""
-extended = "😂"
-print(urllib.parse.quote(extended))
-
-
-if len(extended) > 1800:  #arbitrary length chosen to suite most web browsers
-    offset = random.randint(0,len(extended) - 1800)
-    extended = extended[0 + offset:1800 + offset]
-size = 16
-chunks = [extended[x:x+size] for x in range(0, len(extended), size)]#size chosen to be less than 64, the limit for idna
-processed = []
-for chunk in chunks:
-    print(chunk)
-    processed.append(chunk.encode(encoding="idna"))
-processed = b''.join(processed)
-print("final results")
-print(processed)
-print("back to uni")
-print(processed.decode("idna"))"""
 
 
 app.run(host='0.0.0.0', port='443')
